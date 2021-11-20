@@ -102,7 +102,7 @@ public class MachineJobs {
         //Summary data
         System.out.println("     ");
         System.out.println("--Integer Array Of Jobs--");
-        System.out.println("Order List has been changed to [Start Hour, Duration] for convenience of SPT.");
+        System.out.println("Order List has to be processed.");
         for(int l = 0; l < listToPass.length; l++) {
             System.out.print("Duration = ");
             System.out.print(listToPass[l][1]-listToPass[l][0]);
