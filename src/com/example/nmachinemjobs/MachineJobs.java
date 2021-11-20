@@ -20,6 +20,19 @@ public class MachineJobs {
         return result.toArray(input);
     }
 
+    public static boolean checkInterval(ArrayList<int[]> arr) {
+        int counter = 0;
+        for(int i = 0; i < arr.size(); i ++) {
+            if(arr.get(i)[1] !=0) {
+                counter =1;
+            }
+        }
+        if(counter != 0) {
+            return false;
+        }
+        return true;
+    }
+
     //check availability and assign schedule.
     public static ArrayList<int[]> checkAvailability(Machine[] machineList, int[][] orderList) {
         int localCounter = 0;
@@ -32,14 +45,26 @@ public class MachineJobs {
         }
         for(Machine m : machineList) { //n
             for (int i = 0; i < x.size(); i++) { //n
-                if (m.schedule[x.get(i)[0]][0] == 0 && m.schedule[x.get(i)[1] - 1][0] == 0) {
-                    for (int j = x.get(i)[0]; j < x.get(i)[1]; j++) { //setting values
-                        m.setSchedule(j, x.get(i));
-                        //remove the element to reduce the list
-                    }   x.remove(i); //log n
+                if (m.schedule[x.get(i)[0]][0] == 0 && m.schedule[x.get(i)[1]-1][1] == 0) {// && m.schedule[x.get(i)[1]][0] == 0) {// && m.schedule[x.get(i)[1]-1][1] == 0) {
+                    for (int j = x.get(i)[0]; j < x.get(i)[1]; j++) {
+                        y.add(m.schedule[j]);//setting values
+                    }
+                        if(checkInterval(y)) { //helper function to check interval schedule
+                            for (int j = x.get(i)[0]; j < x.get(i)[1]; j++) {
+                                m.setSchedule(j, x.get(i));//setting values
+
+                            }
+                            x.remove(i);//remove the element to reduce the list
+                        }
+
+
+                        //log n
                 } else {
-                    y.add(x.get(i));
+                    System.out.println("You reached your else statement.");
+                    //y.add(x.get(i));
+
                 }
+                y.clear();
             }
         }
             System.out.println("--Orders Remaining--");
@@ -97,8 +122,8 @@ public class MachineJobs {
             trialAndError.add(listToPass[i]);
         }
         //sort list by end time.
-        Arrays.sort(listToPass, Comparator.comparingDouble(o -> o[1]));
-
+        Arrays.sort(listToPass, Comparator.comparingDouble(o -> (o[1]-o[0])));
+        Arrays.sort(listToPass, Comparator.comparingDouble(o -> (o[1])));
         //Summary data
         System.out.println("     ");
         System.out.println("--Integer Array Of Jobs--");
